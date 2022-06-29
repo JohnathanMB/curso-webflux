@@ -26,4 +26,9 @@ public class EstudianteHandler {
         String grado = serverRequest.queryParam("grado").orElse("");
         return ServerResponse.ok().body(estudianteUseCase.notificarEstudiantes(grado), String.class);
     }
+
+    public Mono<ServerResponse> listenGetNotificarEstudiantesParalelo(ServerRequest serverRequest){
+        String grado = serverRequest.queryParam("grado").orElse("");
+        return ServerResponse.ok().body(estudianteUseCase.notificarEstudiantesParalelo(grado), String.class);
+    }
 }

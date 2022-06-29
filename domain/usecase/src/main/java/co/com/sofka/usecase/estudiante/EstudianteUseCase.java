@@ -5,6 +5,7 @@ import co.com.sofka.model.estudiante.gateways.EstudianteRepository;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RequiredArgsConstructor
 public class EstudianteUseCase {
@@ -30,5 +31,15 @@ public class EstudianteUseCase {
     private Mono<String> enviarNotificacionEstudiante(Estudiante estudiante){
         String strNotificacion = "Notificacion enviada a Estudiante %s";
         return Mono.just(String.format(strNotificacion, estudiante.getId()));
+    }
+
+    public Mono<String> notificarEstudiantesParalelo(String grado){
+        return getAllEstudiantes()
+                .parallel(2).runOn(Schedulers.parallel())
+                .filter(estudiante -> estudiante.getCurso().equalsIgnoreCase(grado))
+                .log()
+                .flatMap(estudiante -> enviarNotificacionEstudiante(estudiante))
+                .sequential()
+                .then(Mono.just("Envio de notificacion Finalizada"));
     }
 }
