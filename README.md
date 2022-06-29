@@ -53,3 +53,10 @@ gradle cleanArchitecture --package=co.com.sofka --type=reactive --name=webflux-p
     - Se crea método en handler
     - Se crea método en EstudianteRouteRest
     - Se consume desde postman
+
+### feature/practica/4
+1. Crear servicio para notificar a todos los estudiantes
+
+### feature/practica/5
+1. El mísmo método anterior pero con funcionamiento paralelo explicito
+
