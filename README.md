@@ -45,4 +45,11 @@ gradle cleanArchitecture --package=co.com.sofka --type=reactive --name=webflux-p
 
 ### feature/practica/3
 1. Crear servicio consultar todos los estudiantes en nuestra base de datos.
-    - 
+    - se crea el método para consultar todos los registros en la interface EstudianteRepository.java
+    - se crea implementación del anterior método en EstudianteRepositoryAdapter
+    - En la implementación se usa el repository (ahora nombrado EstudianteDataRepository) para consultar todos los registros y luego convertirlos a los objetos Estudiante
+    - Se crea parametro **final** de EstudianteRepository en EstudianteUseCase
+    - Se crea método para consultar todos los estudiantes en el caso de uso
+    - Se crea método en handler
+    - Se crea método en EstudianteRouteRest
+    - Se consume desde postman
