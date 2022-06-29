@@ -23,6 +23,8 @@ gradle cleanArchitecture --package=co.com.sofka --type=reactive --name=webflux-p
     - Creamos clase EstudianteData
     - Renombramos las clases JPARepository y JPARepositoryAdapter
     - Ajustamos parametros de las clase de repositorio
-3. Creamos Script de inserción a base de datos inicial
-* Contiene configuracion inicial para utilizar JPA para consumo de base de datos
-* Contiene puerto para consumo de base de datos
+    - creamos archivo update.sql y agregamos script de inserción de data
+3. Creamos entryPoint para consumir servicios de entidad
+    - gradle generateEntryPoint --type=webflux
+    - Verificamos la creacion del módulo
+    - Renombramos las clases Handler y RouterRest
