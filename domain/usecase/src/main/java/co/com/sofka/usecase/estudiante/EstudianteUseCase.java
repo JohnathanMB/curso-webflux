@@ -18,4 +18,17 @@ public class EstudianteUseCase {
     public Flux<Estudiante> getAllEstudiantes(){
         return Flux.fromIterable(estudianteRepository.findAll());
     }
+
+    public Mono<String> notificarEstudiantes(String grado){
+        return getAllEstudiantes()
+                .filter(estudiante -> estudiante.getCurso().equalsIgnoreCase(grado))
+                .log()
+                .flatMap(estudiante -> enviarNotificacionEstudiante(estudiante))
+                .then(Mono.just("Envio de notificacion Finalizada"));
+    }
+
+    private Mono<String> enviarNotificacionEstudiante(Estudiante estudiante){
+        String strNotificacion = "Notificacion enviada a Estudiante %s";
+        return Mono.just(String.format(strNotificacion, estudiante.getId()));
+    }
 }

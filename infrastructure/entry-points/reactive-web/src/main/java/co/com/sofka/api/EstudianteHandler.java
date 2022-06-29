@@ -22,18 +22,8 @@ public class EstudianteHandler {
         return ServerResponse.ok().body(estudianteUseCase.getAllEstudiantes(), Flux.class);
     }
 
-    public Mono<ServerResponse> listenGETUseCase(ServerRequest serverRequest) {
-
-        return ServerResponse.ok().bodyValue("");
-    }
-
-    public Mono<ServerResponse> listenGETOtherUseCase(ServerRequest serverRequest) {
-        // useCase2.logic();
-        return ServerResponse.ok().bodyValue("");
-    }
-
-    public Mono<ServerResponse> listenPOSTUseCase(ServerRequest serverRequest) {
-        // usecase.logic();
-        return ServerResponse.ok().bodyValue("");
+    public Mono<ServerResponse> listenGetNotificarEstudiantes(ServerRequest serverRequest){
+        String grado = serverRequest.queryParam("grado").orElse("");
+        return ServerResponse.ok().body(estudianteUseCase.notificarEstudiantes(grado), String.class);
     }
 }
