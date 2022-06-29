@@ -30,6 +30,12 @@ public class EstudianteUseCase {
 
     private Mono<String> enviarNotificacionEstudiante(Estudiante estudiante){
         String strNotificacion = "Notificacion enviada a Estudiante %s";
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return Mono.just(String.format(strNotificacion, estudiante.getId()));
     }
 
