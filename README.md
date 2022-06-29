@@ -20,11 +20,29 @@ gradle cleanArchitecture --package=co.com.sofka --type=reactive --name=webflux-p
 2. Creamos driven Adapter JPA para consumo de base de datos
     - gradle generateDrivenAdapter --type=jpa
     - Verificamos creacion de modelo y cambios en el archivo application.yaml
+        - Con este paso se debe crear la configuración para conectar a base de datos y una base de datos local con H2
     - Creamos clase EstudianteData
     - Renombramos las clases JPARepository y JPARepositoryAdapter
     - Ajustamos parametros de las clase de repositorio
     - creamos archivo update.sql y agregamos script de inserción de data
+    - Ajuste de application.yaml - se agregan las siguientes variables:
+        spring.sql.init.mode: always
+        spring.sql.init.data-locations: classpath:update.sql
 3. Creamos entryPoint para consumir servicios de entidad
     - gradle generateEntryPoint --type=webflux
     - Verificamos la creacion del módulo
     - Renombramos las clases Handler y RouterRest
+
+### feature/practica/2
+1. Creamos el caso de uso para llevar a cabo la lógica de negocio de nuestro proyecto
+    - gradle generateUseCase --name=EstudianteUseCase
+    - Se verifica que se cree la clase EstudianteUseCase.java en el paquete usecase
+2. Usamos el caso de uso EstudianteUseCase en EstudianteHandler
+3. Creamos un método en el caso de uso que nos responda un Mono<String> para validar que la conexión se haga adecuadamente
+4. Creamos método en handler para usar el método de ejemplo
+5. Creamos método ruta en RouterRest para poder probar servicio desde postman
+6. Se prueba desde postman y nos debe responder el String que definimos en el método del usecase
+
+### feature/practica/3
+1. Crear servicio consultar todos los estudiantes en nuestra base de datos.
+    - 
