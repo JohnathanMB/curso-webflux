@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.print.attribute.standard.PresentationDirection;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +47,24 @@ public class Handler {
         return ServerResponse.ok().body(exampleMonoZip(), String.class);
     }
 
+    public Mono<ServerResponse> listenGetExampleDefaultIfEmpty(ServerRequest serverRequest){
+        return ServerResponse.ok().body(exampleDefaultIfEmpty(), String.class);
+    }
+
+    public Mono<ServerResponse> listenGetExampleSwitchIfEmpty(ServerRequest serverRequest){
+        return ServerResponse.ok().body(exampleSwitchIfEmpty(), String.class);
+    }
+
+    public Mono<ServerResponse> listenGetExampleOnErrorResume(ServerRequest serverRequest){
+        int iReq =Integer.parseInt(serverRequest.queryParam("iReq").orElse("-1"));
+        return ServerResponse.ok().body(exampleOnErrorResume(iReq), Integer.class);
+    }
+
+    public Mono<ServerResponse> listenGetExampleOnErrorContinue(ServerRequest serverRequest){
+        int iReq =Integer.parseInt(serverRequest.queryParam("iReq").orElse("-1"));
+        return ServerResponse.ok().body(exampleOnErrorContinue(iReq), Integer.class);
+    }
+
     private Mono<String> exampleMonoMap(){
         Integer i = 5;
         Mono<Integer> monoInt = Mono.just(i);
@@ -71,8 +90,8 @@ public class Handler {
     private Mono<String> exampleMonoFromFluxMap(){
         List<Integer> listInt = Arrays.asList(1,2,3,4,5);
         return Flux.fromIterable(listInt)
-                    .log("log in Flux")
-                    .flatMap(dataI -> monoCastIntToString(dataI))
+                .log("log in Flux")
+                .flatMap(dataI -> monoCastIntToString(dataI))
                 .reduce((subtotal, dataStr1) -> subtotal.concat("-").concat(dataStr1))
                 .log("log post reduce");
     }
@@ -135,5 +154,42 @@ public class Handler {
 
     }
 
+    private Mono<String> exampleDefaultIfEmpty(){
+        Flux<String> listStr = Flux.fromIterable(Arrays.asList("a", "ab", "ac", "d"));
+        return listStr
+                .filter(str -> str.contains("a"))
+                .defaultIfEmpty("Objeto de busqueda no encontrado")
+                .reduce((strSubTotal, str) -> strSubTotal.concat(str));
+    }
+
+    private Mono<String> exampleSwitchIfEmpty(){
+        Flux<String> listStr = Flux.fromIterable(Arrays.asList("x", "xb", "xc", "d"));
+        return listStr
+                .filter(str -> str.contains("x"))
+                .reduce((strSubTotal, str) -> strSubTotal.concat(str))
+                .switchIfEmpty(exampleDefaultIfEmpty());
+    }
+
+    private Mono<Integer> exampleOnErrorResume(int reqI){
+        return Flux.range(20, 30)
+                .doOnNext(i -> System.out.println("input: "+i))
+                .map(i -> i/reqI)
+                .reduce((subtotal, i) -> subtotal+i)
+                .onErrorResume(error -> {
+                    System.out.println("Ocurrió un error: "+error.getMessage());
+                    return Mono.just(-1);
+                });
+    }
+
+    private Mono<Integer> exampleOnErrorContinue(int reqI){
+        return Flux.range(1, 5)
+                .doOnNext(i -> System.out.println("input: "+i))
+                .map(i -> i == reqI ? i/0 : i)
+                .onErrorContinue((error, i) -> {
+                    System.out.println("Error detectado: "+error.getMessage());
+                    System.out.println("Error al procesar el publicador con data: "+ i);
+                })
+                .reduce((subtotal, i) -> subtotal+i);
+    }
 
 }
