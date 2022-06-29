@@ -1,5 +1,6 @@
 package co.com.sofka.api;
 
+import co.com.sofka.usecase.estudiante.EstudianteUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -9,10 +10,15 @@ import reactor.core.publisher.Mono;
 @Component
 @RequiredArgsConstructor
 public class EstudianteHandler {
-//private  final UseCase useCase;
-//private  final UseCase2 useCase2;
+    private final EstudianteUseCase estudianteUseCase;
+
+    public Mono<ServerResponse> listenGetExampleUseCase(ServerRequest serverRequest){
+        return estudianteUseCase.pruebaMonoString()
+                .flatMap(response -> ServerResponse.ok().bodyValue(response));
+    }
+
     public Mono<ServerResponse> listenGETUseCase(ServerRequest serverRequest) {
-        // usecase.logic();
+
         return ServerResponse.ok().bodyValue("");
     }
 
