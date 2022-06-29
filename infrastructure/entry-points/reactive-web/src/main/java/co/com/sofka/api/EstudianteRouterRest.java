@@ -14,7 +14,8 @@ public class EstudianteRouterRest {
 @Bean
 public RouterFunction<ServerResponse> routerFunction(EstudianteHandler handler) {
 
-    return route(GET("/api/estudiantes/getExample"), handler::listenGetExampleUseCase);
+    return route(GET("/api/estudiantes/getExample"), handler::listenGetExampleUseCase)
+            .andRoute(GET("/api/estudiantes/getAll"), handler::listenGetFindAll);
     /*
     return route(GET("/api/usecase/path"), handler::listenGETUseCase)
     .andRoute(POST("/api/usecase/otherpath"), handler::listenPOSTUseCase).and(route(GET("/api/otherusercase/path"), handler::listenGETOtherUseCase));

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -15,6 +16,10 @@ public class EstudianteHandler {
     public Mono<ServerResponse> listenGetExampleUseCase(ServerRequest serverRequest){
         return estudianteUseCase.pruebaMonoString()
                 .flatMap(response -> ServerResponse.ok().bodyValue(response));
+    }
+
+    public Mono<ServerResponse> listenGetFindAll(ServerRequest serverRequest){
+        return ServerResponse.ok().body(estudianteUseCase.getAllEstudiantes(), Flux.class);
     }
 
     public Mono<ServerResponse> listenGETUseCase(ServerRequest serverRequest) {
