@@ -15,8 +15,14 @@ gradle cleanArchitecture --package=co.com.sofka --type=reactive --name=webflux-p
 
 ### feature/practica/1
 * Contiene la estructura principal creada al momento de correr el comando anteriormente indicado
-* Contiene configuración inicial para utilizar H2 como base de datos local
-* Contiene Script de inserción a base de datos inicial
+1. Creamos el modelo Estudiante que vamos a usar en la práctica
+    - gradle generateModel --name=Estudiante
+2. Creamos driven Adapter JPA para consumo de base de datos
+    - gradle generateDrivenAdapter --type=jpa
+    - Verificamos creacion de modelo y cambios en el archivo application.yaml
+    - Creamos clase EstudianteData
+    - Renombramos las clases JPARepository y JPARepositoryAdapter
+    - Ajustamos parametros de las clase de repositorio
+3. Creamos Script de inserción a base de datos inicial
 * Contiene configuracion inicial para utilizar JPA para consumo de base de datos
-* Contiene el modelo Estudiante que vamos a usar en la práctica
 * Contiene puerto para consumo de base de datos
