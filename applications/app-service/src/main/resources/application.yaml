@@ -18,6 +18,10 @@ spring:
     driverClassName: "org.h2.Driver"
   jpa:
     databasePlatform: "org.hibernate.dialect.H2Dialect"
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:update.sql
 management:
   endpoints:
     web:

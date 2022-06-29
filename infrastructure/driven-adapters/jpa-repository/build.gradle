@@ -6,4 +6,6 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+    //implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+
 }
